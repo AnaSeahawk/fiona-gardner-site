@@ -41,10 +41,10 @@
     img { display: block; max-width: 100%; height: auto; }
     .hero {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      min-height: 92vh;
+      grid-template-columns: minmax(0, 34rem) minmax(0, 1fr);
     }
-    .hero-photo { background: url('assets/fiona-portrait.jpg') center 30% / cover no-repeat; min-height: 360px; }
+    /* Shown whole, never trimmed: the file is cropped so her eyes sit on the golden line (38.2% from the top). */
+    .hero-photo { width: 100%; height: auto; }
     .hero-text {
       display: grid;
       align-content: center;
@@ -96,6 +96,22 @@
     .band-text { display: grid; align-content: center; gap: 1rem; padding: 3.5rem 2rem; }
     .band-text p { margin: 0; }
     .honour { font-family: var(--display); font-style: italic; font-size: 1.5rem; line-height: 1.35; color: var(--gold); }
+    .follow { text-align: center; justify-items: center; }
+    .follow-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: .4rem; }
+    .follow-links a {
+      display: grid;
+      gap: .15rem;
+      min-width: 12rem;
+      padding: .9rem 1.4rem;
+      color: var(--gold);
+      border: 1px solid var(--line);
+      font-size: .8rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+    .follow-links a:hover, .follow-links a:focus-visible { border-color: var(--gold); }
+    .follow-links span { color: var(--ink-soft); font-size: .9rem; letter-spacing: 0; text-transform: none; }
     footer { padding: 2.5rem 1.25rem 3rem; text-align: center; color: var(--ink-soft); font-size: .88rem; display: grid; gap: .5rem; justify-items: center; }
     footer img { width: 44px; opacity: .9; }
     footer p { margin: 0; }
@@ -103,7 +119,6 @@
     a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
     @media (max-width: 760px) {
       .hero, .band { grid-template-columns: 1fr; min-height: 0; }
-      .hero-photo { min-height: 62vh; }
       .hero-text { padding: 2.6rem 16px 3.2rem; }
       .ways { grid-template-columns: 1fr; }
       .band-photo { min-height: 60vh; }
@@ -113,11 +128,10 @@
 </head>
 <body>
   <header class="hero">
-    <div class="hero-photo" role="img" aria-label="Fiona Gardner in a wide-brimmed hat, smiling in a sunlit pine forest"></div>
+    <img class="hero-photo" src="assets/fiona-portrait.jpg" alt="Fiona Gardner in a wide-brimmed hat, smiling in a sunlit pine forest" width="1100" height="1604">
     <div class="hero-text">
       <h1><img class="brandmark" src="assets/fiona-gardner-brandmark.png" alt="Fiona Gardner" width="1000" height="270"></h1>
       <p class="line">An observer of life’s hidden waters.</p>
-      <a class="button" href="https://www.instagram.com/messagesinplasma/">Follow Messages in Plasma</a>
     </div>
   </header>
 
@@ -132,18 +146,6 @@
       <div class="shell">
         <p class="eyebrow">Ways in</p>
         <div class="ways">
-          <a class="way" href="https://www.instagram.com/messagesinplasma/">
-            <span class="tag">On Instagram</span>
-            <h3>Messages in Plasma</h3>
-            <p>Microscopy of blood, plasma and water, shared as it is seen.</p>
-            <span class="go">@messagesinplasma&nbsp; ↗</span>
-          </a>
-          <a class="way" href="https://anaseahawk.github.io/womens-shivambu-circle/">
-            <span class="tag">Drop-in circle</span>
-            <h3>Women’s Shivambu Circle</h3>
-            <p>Held together with Ana Seahawk and Megan Macdonald. Curiosity is enough.</p>
-            <span class="go">The circle&nbsp; ↗</span>
-          </a>
           <div class="way">
             <span class="tag">Coming soon</span>
             <h3>Blood consultations</h3>
@@ -154,6 +156,12 @@
             <h3>The Names of Light</h3>
             <p>A series in which these discoveries flow into story, inviting readers to see more deeply and feel more fully.</p>
           </div>
+          <a class="way" href="https://anaseahawk.github.io/womens-shivambu-circle/">
+            <span class="tag">Drop-in circle</span>
+            <h3>Women’s Shivambu Circle</h3>
+            <p>Held together with Ana Seahawk and Megan Macdonald. Curiosity is enough.</p>
+            <span class="go">The circle&nbsp; ↗</span>
+          </a>
         </div>
       </div>
     </section>
@@ -163,6 +171,14 @@
       <div class="band-text">
         <p class="honour">Recognising the light, water and intelligence within ourselves.</p>
         <p class="soft">Honouring the harmony of the body, mind and spirit.</p>
+      </div>
+    </section>
+    <section class="shell follow">
+      <h2>Follow Messages in Plasma</h2>
+      <p class="soft">Microscopy of blood, plasma and water, shared as it is seen.</p>
+      <div class="follow-links">
+        <a href="https://www.instagram.com/messagesinplasma/">Instagram&nbsp; ↗<span>@messagesinplasma</span></a>
+        <a href="https://www.facebook.com/fiona.f.gardner">Facebook&nbsp; ↗<span>Fiona Gardner</span></a>
       </div>
     </section>
   </main>
