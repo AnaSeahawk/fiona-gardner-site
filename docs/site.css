@@ -110,6 +110,23 @@ footer p { margin: 0; }
 .shell ul, .shell ol { margin: 0; padding-left: 1.3rem; display: grid; gap: .45rem; }
 .price { font-family: var(--display); font-size: 1.7rem; font-weight: 600; color: var(--gold); }
 .price span { color: var(--ink-soft); font-family: var(--body); font-size: .9rem; font-weight: 400; }
+.gallery-intro { max-width: 72rem; padding-bottom: 1.5rem; }
+.gallery-nav { display: flex; flex-wrap: wrap; gap: .5rem 1.6rem; font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; }
+.gallery-set { max-width: 72rem; margin-inline: auto; padding: 2.5rem 1.25rem 3.5rem; display: grid; gap: 1.2rem; }
+.sheet { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.tile { display: block; position: relative; background: #0d0b09; }
+.tile img { width: 100%; aspect-ratio: 1; object-fit: cover; transition: opacity .2s; }
+.tile:hover img, .tile:focus-visible img { opacity: .82; }
+/* An image that has an essay or story: gold frame and a small star; the tile links to the writing. */
+.tile--story { outline: 2px solid var(--gold); outline-offset: 3px; }
+.tile--story::after { content: "✦"; position: absolute; right: .4rem; bottom: .3rem; color: #f1d58e; font-size: 1rem; text-shadow: 0 0 6px #000; }
+.viewer { max-width: none; max-height: none; width: 100vw; height: 100vh; margin: 0; padding: 0; border: 0; background: rgba(8, 7, 6, .94); }
+.viewer[open] { display: grid; place-items: center; }
+.viewer img { max-width: 94vw; max-height: 88vh; width: auto; height: auto; }
+.viewer button { position: fixed; border: 0; background: none; color: #f1e9dc; font: 2.4rem/1 var(--display); cursor: pointer; padding: .6rem 1rem; }
+.viewer-close { top: .4rem; right: .4rem; }
+.viewer-prev { left: .2rem; top: 50%; translate: 0 -50%; }
+.viewer-next { right: .2rem; top: 50%; translate: 0 -50%; }
 a { color: var(--gold); text-underline-offset: .2em; }
 a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 @media (max-width: 760px) {
@@ -119,4 +136,6 @@ a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
   .band-photo { min-height: 60vh; }
   .band-text { padding: 2.6rem 16px; }
   .sample { padding: 1.2rem 1.1rem; font-size: 1.2rem; }
+  .sheet { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
+  .gallery-set { padding-inline: 16px; }
 }
