@@ -53,8 +53,6 @@ h1 { margin: 0; }
   text-decoration: none;
 }
 @media (prefers-color-scheme: dark) { .button { color: #16130f; } }
-.buttons { display: flex; flex-wrap: wrap; gap: .7rem; }
-.button--quiet, .button--quiet:visited { color: var(--gold) !important; background: none; }
 .eyebrow { margin: 0; color: var(--gold); font-size: .75rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; }
 h2, h3 { font-family: var(--display); font-weight: 500; margin: 0; text-wrap: balance; }
 h2 { font-size: clamp(2rem, 5vw, 2.8rem); line-height: 1.05; }
@@ -77,6 +75,8 @@ h3 { font-size: 1.6rem; font-weight: 600; line-height: 1.15; }
 a.way:hover, a.way:focus-visible { border-color: var(--gold); }
 .way p { color: var(--ink-soft); font-size: .95rem; }
 .way .tag { color: var(--violet); font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+.way-icons { display: flex; gap: .45rem; margin: .2rem 0; }
+.way-icons img { width: 2.8rem; height: 2.8rem; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px var(--line); }
 .way .go { color: var(--gold); font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; }
 .band { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: stretch; }
 .band-photo { background: url('assets/fiona-light.jpg') center 35% / cover no-repeat; min-height: 420px; }
