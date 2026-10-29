@@ -129,6 +129,8 @@ a.exploration:hover, a.exploration:focus-visible { border-color: var(--gold); }
 .price span { color: var(--ink-soft); font-family: var(--body); font-size: .9rem; font-weight: 400; }
 .gallery-intro { max-width: 72rem; padding-bottom: 1.5rem; }
 .gallery-nav { display: flex; flex-wrap: wrap; gap: .5rem 1.6rem; font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; }
+.gallery-key { font-size: .85rem; color: var(--ink-soft); font-style: italic; }
+.gallery-key span { color: var(--gold); font-style: normal; margin-right: .2rem; }
 .gallery-set { max-width: 72rem; margin-inline: auto; padding: 2.5rem 1.25rem 3.5rem; display: grid; gap: 1.2rem; }
 .sheet { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
 .tile { display: block; position: relative; background: #0d0b09; }
