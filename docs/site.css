@@ -8,12 +8,27 @@
   --line: rgba(156, 122, 51, 0.28);
   --display: 'Cormorant Garamond', Garamond, Georgia, serif;
   --body: 'Source Serif 4', Georgia, serif;
+  --on-gold: #faf7f1;
+  --toggle-background: rgba(250, 247, 241, 0.82); --toggle-border: rgba(83, 67, 45, 0.3);
+  --toggle-knob: #a77b19; --toggle-shift: 0; --sun-opacity: 1; --moon-opacity: .42;
+  color-scheme: light;
 }
+/* Dark follows the device unless the visitor has chosen with the toggle. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --ground: #16130f; --paper: #1f1b16; --ink: #f1e9dc; --ink-soft: #b9ad9d;
-    --gold: #d5b469; --violet: #b9a3df; --line: rgba(213, 180, 105, 0.22);
+    --gold: #d5b469; --violet: #b9a3df; --line: rgba(213, 180, 105, 0.22); --on-gold: #16130f;
+    --toggle-background: rgba(12, 10, 14, 0.55); --toggle-border: rgba(230, 207, 166, 0.3);
+    --toggle-knob: #e2bc65; --toggle-shift: 1.35rem; --sun-opacity: .42; --moon-opacity: 1;
+    color-scheme: dark;
   }
+}
+:root[data-theme="dark"] {
+    --ground: #16130f; --paper: #1f1b16; --ink: #f1e9dc; --ink-soft: #b9ad9d;
+    --gold: #d5b469; --violet: #b9a3df; --line: rgba(213, 180, 105, 0.22); --on-gold: #16130f;
+    --toggle-background: rgba(12, 10, 14, 0.55); --toggle-border: rgba(230, 207, 166, 0.3);
+    --toggle-knob: #e2bc65; --toggle-shift: 1.35rem; --sun-opacity: .42; --moon-opacity: 1;
+    color-scheme: dark;
 }
 * { box-sizing: border-box; }
 body {
@@ -44,7 +59,7 @@ h1 { margin: 0; }
 .button {
   display: inline-block;
   padding: .75rem 1.4rem;
-  color: #faf7f1;
+  color: var(--on-gold);
   background: var(--gold);
   border: 1px solid var(--gold);
   font-size: .8rem;
@@ -52,7 +67,6 @@ h1 { margin: 0; }
   text-transform: uppercase;
   text-decoration: none;
 }
-@media (prefers-color-scheme: dark) { .button { color: #16130f; } }
 .eyebrow { margin: 0; color: var(--gold); font-size: .75rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; }
 h2, h3 { font-family: var(--display); font-weight: 500; margin: 0; text-wrap: balance; }
 h2 { font-size: clamp(2rem, 5vw, 2.8rem); line-height: 1.05; }
@@ -158,3 +172,15 @@ a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
   .sheet { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
   .gallery-set { padding-inline: 16px; }
 }
+
+/* Light/dark switch, after anaseahawk.com. */
+.theme-toggle { position: absolute; top: 1rem; right: 1rem; z-index: 5; width: 3.15rem; height: 1.75rem; padding: 0; color: var(--ink-soft); background: transparent; border: 0; border-radius: 999px; cursor: pointer; }
+.theme-toggle__track { position: relative; display: block; width: 100%; height: 100%; background: var(--toggle-background); border: 1px solid var(--toggle-border); border-radius: inherit; box-shadow: inset 0 1px 4px rgba(0, 0, 0, .12); backdrop-filter: blur(4px); }
+.theme-toggle__sun, .theme-toggle__moon { position: absolute; top: 50%; z-index: 1; color: currentColor; font-family: var(--display); font-size: .72rem; line-height: 1; transform: translateY(-50%); }
+.theme-toggle__sun { left: .48rem; opacity: var(--sun-opacity); }
+.theme-toggle__moon { right: .44rem; opacity: var(--moon-opacity); }
+.theme-toggle__knob { position: absolute; top: .25rem; left: .25rem; z-index: 2; width: 1.15rem; height: 1.15rem; background: var(--toggle-knob); border: 1px solid rgba(255, 255, 255, .3); border-radius: 50%; box-shadow: 0 2px 7px rgba(0, 0, 0, .22); transform: translateX(var(--toggle-shift)); transition: transform 180ms ease, background-color 180ms ease; }
+.theme-toggle:hover .theme-toggle__track { border-color: var(--gold); }
+.theme-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+.visually-hidden { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip: rect(0 0 0 0) !important; white-space: nowrap !important; }
+@media (prefers-reduced-motion: reduce) { .theme-toggle__knob { transition: none; } }
