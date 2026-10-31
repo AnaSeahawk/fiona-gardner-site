@@ -99,6 +99,7 @@ a.way:hover, a.way:focus-visible { border-color: var(--gold); }
 .band-text p { margin: 0; }
 .honour { font-family: var(--display); font-style: italic; font-size: 1.5rem; line-height: 1.35; color: var(--gold); }
 .follow { text-align: center; justify-items: center; }
+.support { border-top: 1px solid var(--line); }
 .follow-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: .4rem; }
 .follow-links a {
   display: grid;
