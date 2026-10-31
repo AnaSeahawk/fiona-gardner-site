@@ -78,8 +78,9 @@ a.way:hover, a.way:focus-visible { border-color: var(--gold); }
 .way-icons { display: flex; gap: .45rem; margin: .2rem 0; }
 .way-icons img { width: 2.8rem; height: 2.8rem; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px var(--line); }
 .way .go { color: var(--gold); font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; }
-.band { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: stretch; }
-.band-photo { background: url('assets/fiona-light.jpg') center 35% / cover no-repeat; min-height: 420px; }
+.band { display: grid; grid-template-columns: minmax(0, 34rem) minmax(0, 1fr); align-items: center; }
+/* Shown whole, never trimmed, like the hero photo. */
+.band-photo { width: 100%; height: auto; }
 .band-text { display: grid; align-content: center; gap: 1rem; padding: 3.5rem 2rem; }
 .band-text p { margin: 0; }
 .honour { font-family: var(--display); font-style: italic; font-size: 1.5rem; line-height: 1.35; color: var(--gold); }
@@ -152,7 +153,6 @@ a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
   .hero, .band { grid-template-columns: 1fr; min-height: 0; }
   .hero-text { padding: 2.6rem 16px 3.2rem; }
   .ways { grid-template-columns: 1fr; }
-  .band-photo { min-height: 60vh; }
   .band-text { padding: 2.6rem 16px; }
   .sample { padding: 1.2rem 1.1rem; font-size: 1.2rem; }
   .sheet { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
