@@ -167,6 +167,17 @@ a.exploration:hover, a.exploration:focus-visible { border-color: var(--gold); }
 .viewer-next { right: .2rem; top: 50%; translate: 0 -50%; }
 a { color: var(--gold); text-underline-offset: .2em; }
 a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+/* The Living Portrait page */
+.shell--tight { padding-bottom: 0; }
+.shell--tight + .essay-art, .shell--tight + .portrait-grid { margin-top: 1.5rem; }
+.essay-art + .essay-art { margin-top: 1rem; }
+.portrait-grid { max-width: 72rem; margin: 2.5rem auto 0; padding-inline: 1.25rem; display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+.portrait-grid figure { margin: 0; }
+.portrait-grid img { display: block; width: 100%; height: auto; border-radius: 4px; }
+.portrait-grid figcaption { margin-top: .6rem; text-align: center; font-family: var(--display); font-style: italic; font-size: 1.2rem; color: var(--gold); }
+.portrait-grid + .essay-art { margin-top: 3rem; }
+@media (max-width: 760px) { .portrait-grid { grid-template-columns: 1fr; } }
+
 @media (max-width: 760px) {
   .hero, .band { grid-template-columns: 1fr; min-height: 0; }
   .hero-text { padding: 2.6rem 16px 3.2rem; }
