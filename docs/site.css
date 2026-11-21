@@ -76,6 +76,7 @@ h3 { font-size: 1.6rem; font-weight: 600; line-height: 1.15; }
 .soft { color: var(--ink-soft); }
 .paper { background: var(--paper); border-block: 1px solid var(--line); }
 .ways { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: .6rem; }
+.way:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .way {
   display: grid;
   align-content: start;
