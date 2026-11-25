@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="The Living Portrait: the client presentation. Blood and inner water under the microscope, in sixteen slides.">
   <meta name="color-scheme" content="dark">
   <meta property="og:title" content="The Living Portrait · Client presentation · Fiona Gardner">
@@ -353,7 +353,10 @@
     var current = -1;
 
     function fit() {
-      var s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+      var vv = window.visualViewport;
+      var w = (vv && vv.width) || document.documentElement.clientWidth || window.innerWidth;
+      var h = (vv && vv.height) || document.documentElement.clientHeight || window.innerHeight;
+      var s = Math.min(w / 1920, h / 1080);
       stage.style.transform = 'translate(-50%, -50%) scale(' + s + ')';
     }
     function hydrate(i) {
@@ -422,7 +425,13 @@
     var hint = document.getElementById('rotate-hint');
     document.getElementById('rotate-close').addEventListener('click', function (e) { e.stopPropagation(); hint.hidden = true; });
     hint.addEventListener('click', function (e) { e.stopPropagation(); });
-    window.addEventListener('resize', fit);
+    // iPhone Safari reports the new size late after a turn, so measure again a few times.
+    function refit() { fit(); requestAnimationFrame(fit); [150, 400, 800].forEach(function (d) { setTimeout(fit, d); }); }
+    window.addEventListener('resize', refit);
+    window.addEventListener('orientationchange', refit);
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', refit);
+    if (window.screen && screen.orientation && screen.orientation.addEventListener) screen.orientation.addEventListener('change', refit);
+    window.addEventListener('pageshow', refit);
     window.addEventListener('hashchange', function () { go(fromHash(), true); });
     fit(); go(fromHash(), true); wake();
   })();
