@@ -38,6 +38,18 @@
     .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
     @media (max-width: 520px) { .controls .home-label { display: none; } }
     @media (prefers-reduced-motion: reduce) { .slide, .slide.active { transition: none; } }
+    .rotate-hint { display: none; }
+    @media (orientation: portrait) and (max-width: 820px) {
+      .rotate-hint { display: flex; position: fixed; top: 16px; left: 16px; right: 16px; z-index: 20; align-items: center;
+                     gap: 12px; padding: 12px 14px 12px 16px; border-radius: 14px; background: rgba(10,7,22,.88);
+                     border: 1px solid rgba(217,178,106,.5); color: #f4f1ea; font-size: 16px; line-height: 1.35; }
+      .rotate-hint .icon { font-size: 24px; color: #e6c27a; flex: none; display: inline-block; animation: tip 2.4s ease-in-out infinite; }
+      .rotate-hint p { margin: 0; flex: 1; }
+      .rotate-hint button { flex: none; background: none; border: 0; color: #e6c27a; font: inherit; font-size: 22px; padding: 4px 8px; cursor: pointer; }
+      .rotate-hint[hidden] { display: none; }
+    }
+    @keyframes tip { 0%, 40% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
+    @media (prefers-reduced-motion: reduce) { .rotate-hint .icon { animation: none; } }
   </style>
 </head>
 <body class="show-ui">
@@ -319,6 +331,11 @@
 </section>
     </div>
   </main>
+  <div class="rotate-hint" id="rotate-hint" role="note">
+    <span class="icon" aria-hidden="true">📱</span>
+    <p>Turn your phone sideways for the best view of the slides.</p>
+    <button type="button" id="rotate-close" aria-label="Close this note">✕</button>
+  </div>
   <nav class="controls" aria-label="Presentation controls">
     <a href="living-portrait.html">← <span class="home-label">The Living Portrait</span></a>
     <div class="group">
@@ -402,6 +419,9 @@
     function wake() { document.body.classList.add('show-ui'); clearTimeout(t);
       t = setTimeout(function () { document.body.classList.remove('show-ui'); }, 2500); }
     ['mousemove', 'touchstart', 'keydown'].forEach(function (ev) { document.addEventListener(ev, wake, { passive: true }); });
+    var hint = document.getElementById('rotate-hint');
+    document.getElementById('rotate-close').addEventListener('click', function (e) { e.stopPropagation(); hint.hidden = true; });
+    hint.addEventListener('click', function (e) { e.stopPropagation(); });
     window.addEventListener('resize', fit);
     window.addEventListener('hashchange', function () { go(fromHash(), true); });
     fit(); go(fromHash(), true); wake();
