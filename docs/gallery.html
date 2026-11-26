@@ -96,34 +96,77 @@
     </section>
   </main>
 
-  <dialog class="viewer" aria-label="Image viewer">
-    <img alt="">
-    <button class="viewer-close" type="button" aria-label="Close">×</button>
-    <button class="viewer-prev" type="button" aria-label="Previous image">‹</button>
-    <button class="viewer-next" type="button" aria-label="Next image">›</button>
-  </dialog>
   <script>
-    // Opens a tile in the viewer and steps through its own set; without script each tile opens the image itself.
-    const viewer = document.querySelector('.viewer');
-    const shown = viewer.querySelector('img');
-    let tiles = [], at = 0;
-    const show = (i) => { at = (i + tiles.length) % tiles.length; shown.src = tiles[at].href; shown.alt = tiles[at].querySelector('img').alt; };
-    document.querySelectorAll('.sheet .tile:not(.tile--story)').forEach((tile) => {
-      tile.addEventListener('click', (event) => {
-        event.preventDefault();
-        tiles = [...tile.closest('.sheet').querySelectorAll('.tile:not(.tile--story)')];
-        show(tiles.indexOf(tile));
-        viewer.showModal();
+    // Each set shows its images by itself: one at a time, in random order, a picture rises out of the grid,
+    // shows itself whole, and settles back, until every picture in the set has been seen; then a new order.
+    // Only the set most in view plays. Tapping a picture shows it next. Without script, tiles open the image.
+    (() => {
+      const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const HOLD = 2300, MOVE = calm ? 0 : 750, REST = 250;   // about 4 seconds a picture
+      const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+      const load = (src) => new Promise((r) => { const i = new Image(); i.onload = () => r(i); i.onerror = () => r(null); i.src = src; });
+      const shuffle = (a) => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+      const shows = [...document.querySelectorAll('.gallery-set .sheet')].map((sheet) => {
+        const tiles = [...sheet.querySelectorAll('.tile:not(.tile--story)')];
+        const veil = document.createElement('div'); veil.className = 'sheet-veil'; sheet.append(veil);
+        const show = { sheet, tiles, bag: [], last: null, ratio: 0, busy: false, next: null };
+        tiles.forEach((tile) => tile.addEventListener('click', (e) => { e.preventDefault(); show.next = tile; if (!show.busy) run(show, true); }));
+        return show;
       });
-    });
-    viewer.querySelector('.viewer-close').addEventListener('click', () => viewer.close());
-    viewer.querySelector('.viewer-prev').addEventListener('click', () => show(at - 1));
-    viewer.querySelector('.viewer-next').addEventListener('click', () => show(at + 1));
-    viewer.addEventListener('click', (event) => { if (event.target === viewer) viewer.close(); });
-    viewer.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowLeft') show(at - 1);
-      if (event.key === 'ArrowRight') show(at + 1);
-    });
+
+      const draw = (show) => {
+        if (show.next) { const t = show.next; show.next = null; show.bag = show.bag.filter((x) => x !== t); return t; }
+        if (!show.bag.length) { show.bag = shuffle([...show.tiles]); if (show.bag[0] === show.last && show.bag.length > 1) show.bag.push(show.bag.shift()); }
+        return show.bag.shift();
+      };
+
+      async function present(show, tile) {
+        const full = await load(tile.href);
+        if (!full) return;
+        const box = show.sheet.getBoundingClientRect(), t = tile.getBoundingClientRect();
+        const from = { left: t.left - box.left, top: t.top - box.top, width: t.width, height: t.height };
+        // The whole picture, as large as fits over the grid (a little margin), centred.
+        const room = { w: box.width * 0.96, h: Math.max(box.height * 0.96, Math.min(innerHeight * 0.8, box.width * 0.75)) };
+        const k = Math.min(room.w / full.naturalWidth, room.h / full.naturalHeight);
+        const w = full.naturalWidth * k, h = full.naturalHeight * k;
+        const to = { left: (box.width - w) / 2, top: (box.height - h) / 2, width: w, height: h };
+        const img = document.createElement('img');
+        img.className = 'sheet-feature'; img.src = full.src; img.alt = tile.querySelector('img').alt;
+        Object.assign(img.style, { left: to.left + 'px', top: to.top + 'px', width: to.width + 'px', height: to.height + 'px' });
+        show.sheet.append(img);
+        tile.classList.add('is-out'); show.sheet.classList.add('is-showing');
+        const px = (r) => ({ left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
+        const opts = { duration: MOVE, easing: 'cubic-bezier(.45,.05,.25,1)', fill: 'both' };
+        await img.animate(calm ? [{ opacity: 0 }, { opacity: 1 }] : [px(from), px(to)], { ...opts, duration: calm ? 600 : MOVE }).finished;
+        if (show.bag[0]) load(show.bag[0].href);   // fetch the next picture while this one shows
+        await wait(HOLD);
+        show.sheet.classList.remove('is-showing');
+        await img.animate(calm ? [{ opacity: 1 }, { opacity: 0 }] : [px(to), px(from)], { ...opts, duration: calm ? 600 : MOVE }).finished;
+        tile.classList.remove('is-out'); img.remove();
+        show.last = tile;
+      }
+
+      async function run(show, once) {
+        show.busy = true;
+        do {
+          await present(show, draw(show));
+          if (!once) await wait(REST);
+        } while ((!once && playing() === show && !document.hidden) || show.next);
+        show.busy = false;
+        if (once) start();
+      }
+
+      // The set most in view plays; the others wait. People who ask for less motion get no autoplay.
+      const playing = () => { const best = shows.reduce((a, b) => (b.ratio > a.ratio ? b : a)); return best.ratio >= 0.3 ? best : null; };
+      const start = () => { const p = playing(); if (!calm && p && !p.busy && !document.hidden) run(p, false); };
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { const s = shows.find((x) => x.sheet === e.target); if (s) s.ratio = e.intersectionRatio; });
+        start();
+      }, { threshold: [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1] });
+      shows.forEach((s) => io.observe(s.sheet));
+      document.addEventListener('visibilitychange', start);
+    })();
   </script>
   <footer>
     <img src="assets/fiona-gardner-symbol.png" alt="" width="128" height="128">

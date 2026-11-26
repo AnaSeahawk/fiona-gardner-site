@@ -165,9 +165,12 @@ a.exploration:hover, a.exploration:focus-visible { border-color: var(--gold); }
 /* An image that has an essay or story: gold frame and a small star; the tile links to the writing. */
 .tile--story { outline: 2px solid var(--gold); outline-offset: 3px; }
 .tile--story::after { content: "✦"; position: absolute; right: .4rem; bottom: .3rem; color: #f1d58e; font-size: 1rem; text-shadow: 0 0 6px #000; }
-.viewer { max-width: none; max-height: none; width: 100vw; height: 100vh; margin: 0; padding: 0; border: 0; background: rgba(8, 7, 6, .94); }
-.viewer[open] { display: grid; place-items: center; }
-.viewer img { max-width: 94vw; max-height: 88vh; width: auto; height: auto; }
+/* The self-showing gallery: a picture rises from its tile to show itself whole over a dimmed grid, then settles back. */
+.sheet { position: relative; }
+.sheet-veil { position: absolute; inset: -6px; z-index: 1; background: rgba(8, 7, 6, .82); opacity: 0; pointer-events: none; transition: opacity 1s ease; }
+.sheet.is-showing .sheet-veil { opacity: 1; }
+.sheet-feature { position: absolute; z-index: 2; max-width: none; object-fit: cover; box-shadow: 0 12px 40px rgba(0, 0, 0, .55); pointer-events: none; }
+.tile.is-out img { opacity: 0; }
 .viewer button { position: fixed; border: 0; background: none; color: #f1e9dc; font: 2.4rem/1 var(--display); cursor: pointer; padding: .6rem 1rem; }
 .viewer-close { top: .4rem; right: .4rem; }
 .viewer-prev { left: .2rem; top: 50%; translate: 0 -50%; }
