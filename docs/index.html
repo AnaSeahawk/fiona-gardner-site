@@ -19,8 +19,8 @@
   <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false"><span class="theme-toggle__track" aria-hidden="true"><span class="theme-toggle__sun">✦</span><span class="theme-toggle__moon">☾</span><span class="theme-toggle__knob"></span></span><span class="visually-hidden theme-toggle__label">Switch to dark theme</span></button>
   <header class="hero">
     <div class="hero-frame">
-      <img class="hero-photo" src="assets/fiona-portrait.jpg" alt="Fiona Gardner in a wide-brimmed hat, smiling in a sunlit pine forest" width="1100" height="1604">
-      <span class="hero-light" aria-hidden="true"></span>
+      <img class="hero-photo" src="assets/fiona-portrait-motion.jpg" alt="Fiona Gardner in a wide-brimmed hat, smiling in a sunlit pine forest" width="720" height="960">
+      <video class="hero-video" src="assets/fiona-portrait-motion.mp4" poster="assets/fiona-portrait-motion.jpg" autoplay loop muted playsinline preload="auto" aria-hidden="true"></video>
     </div>
     <div class="hero-text">
       <h1><img class="brandmark" src="assets/fiona-gardner-brandmark.png" alt="Fiona Gardner" width="1000" height="270"></h1>
@@ -108,5 +108,9 @@
     <p>Photographs © LightFinder Photography</p>
   </footer>
   <script src="theme.js" defer></script>
+  <script>
+    // Visitors who ask for less motion see the still first frame.
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.querySelector('.hero-video')?.pause();
+  </script>
 </body>
 </html>
