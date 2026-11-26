@@ -77,7 +77,10 @@
     </section>
 
     <section class="band">
-      <img class="band-photo" src="assets/fiona-light.jpg" alt="Fiona Gardner, face lifted to the sun, leaning on a weathered log" width="1100" height="1650" loading="lazy">
+      <div class="band-frame">
+        <img class="band-photo" src="assets/fiona-light.jpg" alt="Fiona Gardner, face lifted to the sun, leaning on a weathered log" width="1100" height="1650" loading="lazy">
+        <span class="band-glow" aria-hidden="true"></span>
+      </div>
       <div class="band-text">
         <p class="honour">Recognising the light, water and intelligence within ourselves.</p>
         <p class="soft">Honouring the harmony of the body, mind and spirit.</p>
@@ -108,6 +111,22 @@
     <p>Photographs © LightFinder Photography</p>
   </footer>
   <script src="theme.js" defer></script>
+  <script>
+    // The lower photo comes out of soft golden light each time it scrolls into view, then stays still.
+    // Once it has gone fully off screen, it is quietly reset so it can play again next time.
+    (() => {
+      const frame = document.querySelector('.band-frame');
+      if (!frame || matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+      frame.classList.add('is-waiting');
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.intersectionRatio >= 0.3) frame.classList.add('is-lit');
+          else if (!e.isIntersecting) frame.classList.remove('is-lit');
+        });
+      }, { threshold: [0, 0.3] });
+      io.observe(frame);
+    })();
+  </script>
   <script>
     // Visitors who ask for less motion see the still first frame.
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.querySelector('.hero-video')?.pause();

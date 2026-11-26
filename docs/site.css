@@ -102,6 +102,15 @@ a.way:hover, a.way:focus-visible { border-color: var(--gold); }
 .band { display: grid; grid-template-columns: minmax(0, 34rem) minmax(0, 1fr); align-items: center; }
 /* Shown whole, never trimmed, like the hero photo. */
 .band-photo { width: 100%; height: auto; }
+/* The lower photo comes out of soft golden light, like the sun coming out, each time it is seen; then it stays still.
+   Only when script is running (is-waiting), so without it the photo simply shows. */
+.band-frame { position: relative; overflow: hidden; }
+.band-glow { position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  background: radial-gradient(ellipse 75% 60% at 52% 44%, #fff8e6 0%, #f6e7c4 45%, #e9d5a8 100%); }
+.band-frame.is-waiting .band-glow { opacity: 1; }
+.band-frame.is-waiting .band-photo { filter: brightness(1.7) contrast(.6) sepia(.3); }
+.band-frame.is-lit .band-glow { opacity: 0; transition: opacity 4.5s cubic-bezier(.4, 0, .3, 1); }
+.band-frame.is-lit .band-photo { filter: none; transition: filter 5.5s cubic-bezier(.4, 0, .3, 1); }
 .band-text { display: grid; align-content: center; gap: 1rem; padding: 3.5rem 2rem; }
 .band-text p { margin: 0; }
 .honour { font-family: var(--display); font-style: italic; font-size: 1.5rem; line-height: 1.35; color: var(--gold); }
