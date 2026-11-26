@@ -60,6 +60,31 @@ img { display: block; max-width: 100%; height: auto; }
   text-align: center;
 }
 .brandmark { width: min(100%, 30rem); }
+/* The five violet gems on the line under the name glow softly in turn: the centre star first,
+   then the inner pair, then the outer pair, like light travelling out along the line. Positions are
+   the gems' centres in the brandmark file (1000 x 270). Visitors who ask for less motion see no glow. */
+.brandmark-frame { position: relative; width: min(100%, 30rem); }
+.brandmark-frame .brandmark { width: 100%; }
+.gem { position: absolute; top: 72.9%; width: 4.5%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 255, 255, .95) 0%, rgba(214, 190, 255, .7) 28%, rgba(196, 160, 245, .25) 55%, transparent 72%);
+  opacity: 0; animation: gem-glow 7s ease-in-out infinite; }
+.gem--c { left: 62.35%; width: 8%; }
+.gem--l1 { left: 47.15%; animation-delay: .7s; }
+.gem--r1 { left: 75.55%; animation-delay: .7s; }
+.gem--l2 { left: 32.45%; animation-delay: 1.4s; }
+.gem--r2 { left: 95.85%; animation-delay: 1.4s; }
+/* The little gold diamonds between the gems glow too, more gently and in warm gold, as the light passes them. */
+.gem--gold { top: 72.95%; width: 3.2%;
+  background: radial-gradient(circle, rgba(255, 246, 214, .9) 0%, rgba(240, 205, 120, .55) 30%, rgba(225, 185, 95, .18) 55%, transparent 72%);
+  animation-name: gem-glow-soft; }
+.gem--gold-sm { width: 2.2%; }
+.gem--gl1 { left: 53.95%; animation-delay: .35s; }
+.gem--gr1 { left: 70.25%; animation-delay: .35s; }
+.gem--gl2 { left: 49.4%; animation-delay: .55s; }
+.gem--gr2 { left: 74.25%; animation-delay: .55s; }
+@keyframes gem-glow-soft { 0%, 100% { opacity: 0; scale: .7; } 18% { opacity: .75; scale: 1.05; } 40% { opacity: 0; scale: .85; } }
+@keyframes gem-glow { 0%, 100% { opacity: 0; scale: .6; } 18% { opacity: 1; scale: 1.15; } 40% { opacity: 0; scale: .8; } }
+@media (prefers-reduced-motion: reduce) { .gem { display: none; } }
 h1 { margin: 0; }
 .line { margin: 0; color: var(--ink-soft); font-family: var(--display); font-style: italic; font-size: clamp(1.5rem, 3.4vw, 2rem); line-height: 1.25; }
 .button {
@@ -98,19 +123,22 @@ a.way:hover, a.way:focus-visible { border-color: var(--gold); }
 .way .tag { color: var(--violet); font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
 .way-icons { display: flex; gap: .45rem; margin: .2rem 0; }
 .way-icons img { width: 2.8rem; height: 2.8rem; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px var(--line); }
+/* The round images on the Reflections and Explorations cards turn very slowly, about once a minute and a half,
+   with a soft violet and gold halo breathing around them. On Explorations the three glow one after another,
+   like the light along the name line. Visitors who ask for less motion see them still. */
+.way-icons .turning-cross { animation: cross-turn 90s linear infinite, cross-halo 6s ease-in-out infinite; }
+.way-icons .turning-cross:nth-child(2) { animation-delay: -30s, 2s; }
+.way-icons .turning-cross:nth-child(3) { animation-delay: -60s, 4s; }
+@keyframes cross-turn { to { rotate: 360deg; } }
+@keyframes cross-halo {
+  0%, 100% { box-shadow: 0 0 0 1px var(--line), 0 0 4px 0 rgba(196, 160, 245, .25); }
+  50% { box-shadow: 0 0 0 1px var(--gold), 0 0 14px 3px rgba(196, 160, 245, .55), 0 0 22px 6px rgba(225, 185, 95, .25); }
+}
+@media (prefers-reduced-motion: reduce) { .way-icons .turning-cross { animation: none; } }
 .way .go { color: var(--gold); font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; }
 .band { display: grid; grid-template-columns: minmax(0, 34rem) minmax(0, 1fr); align-items: center; }
 /* Shown whole, never trimmed, like the hero photo. */
 .band-photo { width: 100%; height: auto; }
-/* The lower photo comes out of soft golden light, like the sun coming out, each time it is seen; then it stays still.
-   Only when script is running (is-waiting), so without it the photo simply shows. */
-.band-frame { position: relative; overflow: hidden; }
-.band-glow { position: absolute; inset: 0; pointer-events: none; opacity: 0;
-  background: radial-gradient(ellipse 75% 60% at 52% 44%, #fff8e6 0%, #f6e7c4 45%, #e9d5a8 100%); }
-.band-frame.is-waiting .band-glow { opacity: 1; }
-.band-frame.is-waiting .band-photo { filter: brightness(1.7) contrast(.6) sepia(.3); }
-.band-frame.is-lit .band-glow { opacity: 0; transition: opacity 4.5s cubic-bezier(.4, 0, .3, 1); }
-.band-frame.is-lit .band-photo { filter: none; transition: filter 5.5s cubic-bezier(.4, 0, .3, 1); }
 .band-text { display: grid; align-content: center; gap: 1rem; padding: 3.5rem 2rem; }
 .band-text p { margin: 0; }
 .honour { font-family: var(--display); font-style: italic; font-size: 1.5rem; line-height: 1.35; color: var(--gold); }

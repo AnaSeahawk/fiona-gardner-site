@@ -1,6 +1,6 @@
 # Fiona Gardner
 
-*An observer of life's hidden waters.*
+*An observer of life's living waters.*
 
 Fiona Gardner's one-page site, built with Ana Seahawk. A plain HTML page in `docs/`, served by GitHub Pages.
 
