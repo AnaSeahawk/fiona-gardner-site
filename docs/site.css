@@ -162,12 +162,90 @@ a.way:hover, a.way:focus-visible { border-color: var(--gold); }
 footer { padding: 2.5rem 1.25rem 3rem; text-align: center; color: var(--ink-soft); font-size: .88rem; display: grid; gap: .5rem; justify-items: center; }
 footer img { width: 44px; opacity: .9; }
 footer p { margin: 0; }
+/* Listen to Fiona read: a gold pill button with a play or pause mark, then a thin progress bar. */
+.listen { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem 1.1rem; margin-top: .4rem; }
+.listen-audio { width: 100%; }
+.listen-play { display: inline-flex; align-items: center; gap: .65rem; padding: .7rem 1.25rem .7rem 1rem; cursor: pointer;
+  color: var(--on-gold); background: var(--gold); border: 1px solid var(--gold); border-radius: 999px;
+  font: 600 .78rem/1 var(--body); letter-spacing: .14em; text-transform: uppercase; }
+.listen-play:hover, .listen-play:focus-visible { filter: brightness(1.08); }
+.listen-play:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.listen-icon { width: .8rem; height: .8rem; background: currentColor; clip-path: polygon(10% 0, 100% 50%, 10% 100%); }
+.is-playing .listen-icon { clip-path: polygon(0 0, 35% 0, 35% 100%, 0 100%, 0 0, 65% 0, 100% 0, 100% 100%, 65% 100%, 65% 0); }
+.listen-track { flex: 1 1 12rem; display: flex; align-items: center; gap: .8rem; }
+.listen-track[hidden], .listen-play[hidden] { display: none; }
+.listen-bar { position: relative; flex: 1; height: 1.2rem; cursor: pointer; touch-action: none; }
+.listen-bar::before, .listen-bar span { content: ""; position: absolute; left: 0; top: 50%; height: 3px; translate: 0 -50%; border-radius: 3px; }
+.listen-bar::before { right: 0; background: var(--line); }
+.listen-bar span { width: var(--done, 0%); background: var(--gold); }
+.listen-bar span::after { content: ""; position: absolute; right: -5px; top: 50%; width: 10px; height: 10px; translate: 0 -50%; border-radius: 50%; background: var(--gold); }
+.listen-bar:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 2px; }
+.listen-time { color: var(--ink-soft); font-size: .85rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .sample { margin: .6rem 0 0; padding: 1.6rem 1.8rem; background: var(--paper); border-left: 2px solid var(--gold); font-family: var(--display); font-size: 1.3rem; line-height: 1.55; }
 .sample p { margin: 0; }
 .sample p + p { margin-top: .8em; }
 .book-art { max-width: 72rem; margin: 2.5rem auto 0; padding-inline: 1.25rem; }
 .book-art img { display: block; width: 100%; height: auto; border-radius: 4px; }
 .book-art + .shell { padding-top: 2.5rem; }
+/* The Names of Light painting. At rest the morning is awake: the dewdrop at Sydney's fingertip shimmers,
+   glints twinkle in the grass, light moves on the pond and the sun breathes. Positions are points in the
+   1600 x 900 painting. With script (is-journey), touching the dewdrop sends the view gliding into it;
+   the drop opens into dew under the microscope and rests there with the caption. */
+.dew-stage { position: relative; }
+.dew-scene { position: relative; transform-origin: 56.81% 60.33%; }
+.dew-scene .dew-painting { display: block; width: 100%; height: auto; border-radius: 4px; }
+.dew-sun, .dew-pond, .dew-drop, .glint { position: absolute; translate: -50% -50%; pointer-events: none; border-radius: 50%; }
+.dew-sun { left: 81.4%; top: 22.6%; width: 16%; aspect-ratio: 1; mix-blend-mode: screen;
+  background: radial-gradient(circle, rgba(255, 246, 214, .75) 0%, rgba(255, 220, 150, .35) 35%, transparent 70%);
+  animation: dew-breathe 7s ease-in-out infinite; }
+.dew-pond { left: 81.6%; top: 55%; width: 9%; height: 3.4%; mix-blend-mode: screen;
+  background: radial-gradient(ellipse, rgba(255, 248, 225, .85) 0%, rgba(255, 230, 170, .3) 45%, transparent 72%);
+  animation: dew-ripple 4.5s ease-in-out infinite; }
+.dew-drop { left: 56.81%; top: 60.33%; width: 6.5%; aspect-ratio: 1;
+  background: radial-gradient(circle, rgba(255, 255, 255, .5) 0%, rgba(255, 255, 255, .18) 38%, rgba(220, 235, 255, .22) 46%, transparent 62%);
+  animation: dew-breathe 3.6s ease-in-out infinite; }
+.glint { left: var(--x); top: var(--y); width: 1.4%; aspect-ratio: 1; opacity: 0;
+  background: radial-gradient(circle, #fff 0%, rgba(255, 255, 255, .7) 18%, rgba(255, 250, 230, .2) 42%, transparent 65%);
+  animation: dew-twinkle var(--t) ease-in-out var(--d) infinite; }
+/* Each glint is a soft point of light with a fine four-pointed sparkle. */
+.glint::before, .glint::after { content: ""; position: absolute; left: 50%; top: 50%; translate: -50% -50%; border-radius: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .9), transparent); }
+.glint::before { width: 240%; height: 8%; }
+.glint::after { width: 8%; height: 240%; background: linear-gradient(0deg, transparent, rgba(255, 255, 255, .9), transparent); }
+@keyframes dew-breathe { 0%, 100% { opacity: .35; scale: .92; } 50% { opacity: 1; scale: 1.06; } }
+@keyframes dew-ripple { 0%, 100% { opacity: .35; scale: .85 1; } 50% { opacity: .95; scale: 1.15 .9; } }
+@keyframes dew-twinkle { 0%, 70%, 100% { opacity: 0; scale: .4; rotate: 0deg; } 80% { opacity: 1; scale: 1; rotate: 20deg; } }
+.dew-micro { display: none; }
+.is-journey .dew-stage { position: relative; overflow: hidden; border-radius: 4px; aspect-ratio: 16 / 9; display: grid; place-items: center; background: #000; }
+/* On tall phone screens the stage is taller than the painting, so the journey has room to fill. */
+@media (max-aspect-ratio: 3 / 4) { .is-journey .dew-stage { aspect-ratio: auto; height: 70svh; background: var(--ground); } }
+.is-journey .dew-scene { width: 100%; will-change: transform; }
+.is-journey .dew-micro { display: block; position: absolute; inset: 0; opacity: 0; background: #000;
+  clip-path: circle(var(--r, 0px) at var(--cx, 50%) var(--cy, 50%)); }
+/* The whole round of dew on black, its edges melting into the dark so no frame line shows. */
+.dew-micro img { position: absolute; left: var(--cx, 50%); top: var(--cy, 50%); translate: -50% -50%; max-width: none; width: var(--img-w, min(100%, 100svh * 1182 / 665)); height: auto; -webkit-mask-image: radial-gradient(closest-side, #000 70%, transparent); mask-image: radial-gradient(closest-side, #000 70%, transparent); }
+.dew-caption { position: absolute; left: 0; right: 0; bottom: 12%; margin: 0; padding-inline: 1.25rem; text-align: center;
+  font-family: var(--display); font-style: italic; font-size: clamp(1.25rem, 3.6vw, 2.4rem); line-height: 1.2; color: #f6ead0;
+  text-shadow: 0 0 18px rgba(0, 0, 0, .9), 0 0 4px rgba(0, 0, 0, .8); opacity: var(--caption, 0); }
+.dew-caption span { display: block; margin-top: .6rem; font-family: var(--body); font-style: normal; font-size: .8rem; letter-spacing: .16em; text-transform: uppercase; color: #e3cf9a; }
+/* A generous invisible button over the dewdrop, a soft ring that pulses outward
+   to show where it is, and a hint line that fades away once the journey begins. */
+.dew-touch { position: absolute; z-index: 1; width: 14%; aspect-ratio: 1; translate: -50% -50%; padding: 0; border: 0; border-radius: 50%;
+  left: var(--cx); top: var(--cy); background: transparent; cursor: pointer; }
+.dew-touch::after { content: ""; position: absolute; inset: 28%; border-radius: 50%; border: 1.5px solid rgba(255, 255, 255, .85);
+  animation: dew-call 2.6s ease-out infinite; }
+.dew-touch:focus-visible { outline: 2px solid #f1d58e; outline-offset: 2px; }
+.dew-touch[hidden], .dew-hint[hidden] { display: none; }
+@keyframes dew-call { 0% { opacity: .9; scale: .7; } 100% { opacity: 0; scale: 1.9; } }
+.dew-hint { position: absolute; left: 0; right: 0; bottom: 6%; margin: 0; text-align: center; pointer-events: none;
+  font-family: var(--display); font-style: italic; font-size: clamp(1.05rem, 2.6vw, 1.6rem); color: #fff8e6;
+  text-shadow: 0 0 12px rgba(0, 0, 0, .75), 0 0 3px rgba(0, 0, 0, .6); transition: opacity .8s ease; animation: dew-breathe 4s ease-in-out infinite; }
+.is-travelling .dew-hint { opacity: 0; animation: none; }
+.dew-again { position: absolute; right: .9rem; bottom: .9rem; padding: .45rem .9rem; font: 600 .7rem/1 var(--body); letter-spacing: .14em; text-transform: uppercase;
+  color: #f1d58e; background: rgba(0, 0, 0, .45); border: 1px solid rgba(241, 213, 142, .45); border-radius: 999px; cursor: pointer; }
+.dew-again:hover, .dew-again:focus-visible { border-color: #f1d58e; }
+.dew-again[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) { .dew-sun, .dew-pond, .dew-drop, .glint { display: none; } }
 .explorations { display: grid; gap: .8rem; margin-top: .6rem; }
 .exploration { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); align-items: center; gap: 1.1rem; padding: 1rem 1.2rem; color: inherit; background: var(--paper); border: 1px solid var(--line); text-decoration: none; }
 a.exploration:hover, a.exploration:focus-visible { border-color: var(--gold); }
