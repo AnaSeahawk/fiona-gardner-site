@@ -238,10 +238,12 @@ footer p { margin: 0; }
 .dew-touch[hidden], .dew-hint[hidden] { display: none; }
 @keyframes dew-call { 0% { opacity: .9; scale: .7; } 100% { opacity: 0; scale: 1.9; } }
 .dew-hint { position: absolute; left: 0; right: 0; bottom: 6%; margin: 0; text-align: center; pointer-events: none;
-  font-family: var(--display); font-style: italic; font-size: clamp(1.05rem, 2.6vw, 1.6rem); color: #fff8e6;
-  text-shadow: 0 0 12px rgba(0, 0, 0, .75), 0 0 3px rgba(0, 0, 0, .6); transition: opacity .8s ease; animation: dew-breathe 4s ease-in-out infinite; }
+  font-family: var(--display); font-style: italic; font-size: clamp(1.05rem, 2.6vw, 1.6rem); color: #000;
+  text-shadow: 0 0 14px rgba(255, 248, 230, .85), 0 0 4px rgba(255, 248, 230, .7);   /* black, with a soft light halo so it reads on the painting */ transition: opacity .8s ease; animation: dew-breathe 4s ease-in-out infinite; }
 .is-travelling .dew-hint { opacity: 0; animation: none; }
-.dew-again { position: absolute; right: .9rem; bottom: .9rem; padding: .45rem .9rem; font: 600 .7rem/1 var(--body); letter-spacing: .14em; text-transform: uppercase;
+/* On tall screens the hint sits below the painting, on the page itself: use the page's text colour there. */
+@media (max-aspect-ratio: 3 / 4) { .is-journey .dew-hint { color: var(--ink); text-shadow: none; } }
+.dew-again { position: absolute; right: .9rem; top: .9rem;   /* top corner, clear of the caption at the bottom */ padding: .45rem .9rem; font: 600 .7rem/1 var(--body); letter-spacing: .14em; text-transform: uppercase;
   color: #f1d58e; background: rgba(0, 0, 0, .45); border: 1px solid rgba(241, 213, 142, .45); border-radius: 999px; cursor: pointer; }
 .dew-again:hover, .dew-again:focus-visible { border-color: #f1d58e; }
 .dew-again[hidden] { display: none; }
