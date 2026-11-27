@@ -238,8 +238,10 @@ footer p { margin: 0; }
 .dew-touch[hidden], .dew-hint[hidden] { display: none; }
 @keyframes dew-call { 0% { opacity: .9; scale: .7; } 100% { opacity: 0; scale: 1.9; } }
 .dew-hint { position: absolute; left: 0; right: 0; bottom: 6%; margin: 0; text-align: center; pointer-events: none;
-  font-family: var(--display); font-style: italic; font-size: clamp(1.05rem, 2.6vw, 1.6rem); color: #000;
-  text-shadow: 0 0 14px rgba(255, 248, 230, .85), 0 0 4px rgba(255, 248, 230, .7);   /* black, with a soft light halo so it reads on the painting */ transition: opacity .8s ease; animation: dew-breathe 4s ease-in-out infinite; }
+  font: 600 clamp(1.15rem, 2.8vw, 1.75rem)/1.2 var(--body); letter-spacing: .02em; color: #000;   /* sturdy upright type so it stands out */
+  text-shadow: 0 0 14px rgba(255, 248, 230, .9), 0 0 5px rgba(255, 248, 230, .8);   /* black, with a soft light halo so it reads on the painting */
+  transition: opacity .8s ease; animation: dew-hint-breathe 4s ease-in-out infinite; }
+@keyframes dew-hint-breathe { 0%, 100% { opacity: .8; scale: .98; } 50% { opacity: 1; scale: 1.03; } }   /* a gentle pulse that never fades away */
 .is-travelling .dew-hint { opacity: 0; animation: none; }
 /* On tall screens the hint sits below the painting, on the page itself: use the page's text colour there. */
 @media (max-aspect-ratio: 3 / 4) { .is-journey .dew-hint { color: var(--ink); text-shadow: none; } }
