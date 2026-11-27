@@ -12,7 +12,7 @@
   <link rel="icon" href="assets/fiona-gardner-symbol.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap">
-  <link rel="stylesheet" href="site.css?v=20261127c">
+  <link rel="stylesheet" href="site.css?v=20261127e">
   <script src="theme-init.js"></script>
 </head>
 <body>
@@ -27,7 +27,7 @@
       <h2>How the unseen becomes visible.</h2>
       <div class="explorations">
         <a class="exploration" href="exploring-water.html">
-          <img src="assets/explorations/exploring-water-t.jpg" alt="" width="600" height="600" loading="lazy">
+          <span class="ripple-thumb"><img src="assets/explorations/exploring-water-t.jpg" alt="" width="600" height="600" loading="lazy"><canvas aria-hidden="true"></canvas></span>
           <span>
             <h3>Exploring Water</h3>
             <p>Water enters us, arises within us, and moves through us.</p>
@@ -57,5 +57,42 @@
     <p>© Fiona Gardner</p>
   </footer>
   <script src="theme.js" defer></script>
+  <script>
+    // Exploring Water: redraw the blue circle through a gently moving water surface. Two soft swells travel
+    // across it and a slow ring spreads from the middle; each bends the picture a little and catches the light.
+    // Runs only while the card is on screen; people who ask for less motion see the still picture.
+    (() => {
+      const box = document.querySelector('.ripple-thumb');
+      if (!box || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const img = box.querySelector('img'), cv = box.querySelector('canvas');
+      const S = 160, ctx = cv.getContext('2d', { willReadFrequently: true });
+      cv.width = cv.height = S;
+      const start = () => {
+        const src = document.createElement('canvas'); src.width = src.height = S;
+        const sc = src.getContext('2d'); sc.drawImage(img, 0, 0, S, S);
+        const from = sc.getImageData(0, 0, S, S).data, out = ctx.createImageData(S, S), to = out.data;
+        let visible = true, t0 = performance.now();
+        new IntersectionObserver((e) => { visible = e[0].isIntersecting; if (visible) requestAnimationFrame(frame); }).observe(box);
+        function frame(now) {
+          const t = (now - t0) / 1000;
+          for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) {
+            const cx = x - S / 2, cy = y - S / 2, r = Math.hypot(cx, cy) + .001;
+            // two swells crossing the water, and a slow ring from the centre
+            const w1 = Math.sin(x * .09 + y * .04 - t * 1.6), w2 = Math.sin(x * -.05 + y * .1 - t * 1.15);
+            const ring = Math.sin(r * .16 - t * 2.2) * Math.max(0, 1 - r / (S * .75));
+            const dx = 2.2 * w1 + 1.6 * ring * cx / r, dy = 2.2 * w2 + 1.6 * ring * cy / r;
+            const sx = Math.min(S - 1, Math.max(0, Math.round(x + dx))), sy = Math.min(S - 1, Math.max(0, Math.round(y + dy)));
+            const i = (y * S + x) * 4, j = (sy * S + sx) * 4, light = 1 + .07 * (w1 + w2) + .1 * ring;
+            to[i] = from[j] * light; to[i + 1] = from[j + 1] * light; to[i + 2] = from[j + 2] * light; to[i + 3] = 255;
+          }
+          ctx.putImageData(out, 0, 0);
+          if (visible && !document.hidden) requestAnimationFrame(frame);
+        }
+        document.addEventListener('visibilitychange', () => { if (!document.hidden && visible) requestAnimationFrame(frame); });
+        requestAnimationFrame(frame);
+      };
+      if (img.complete && img.naturalWidth) start(); else img.addEventListener('load', start, { once: true });
+    })();
+  </script>
 </body>
 </html>
