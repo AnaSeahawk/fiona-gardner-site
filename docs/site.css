@@ -267,6 +267,8 @@ a.exploration:hover, a.exploration:focus-visible { border-color: var(--gold); }
 .note { font-size: .88rem; font-style: italic; }
 .page-head { display: flex; justify-content: center; padding: 1.6rem 1.25rem; border-bottom: 1px solid var(--line); }
 .page-head img { width: min(70vw, 16rem); }
+.page-head .brandmark-frame { display: block; width: min(70vw, 16rem); }   /* the same glowing gems as the home page */
+.page-head .brandmark-frame .brandmark { width: 100%; }
 .lede { font-family: var(--display); font-style: italic; font-size: 1.45rem; line-height: 1.4; color: var(--ink-soft); }
 .shell h3 { margin-top: .8rem; }
 .shell ul, .shell ol { margin: 0; padding-left: 1.3rem; display: grid; gap: .45rem; }
