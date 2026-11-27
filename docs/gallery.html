@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Fiona Gardner&#39;s microscopy: living water (urine), blood and dew.">
+  <meta name="description" content="Fiona Gardner&#39;s microscopy: living water (urine), blood plasma, blood and dew.">
   <meta name="color-scheme" content="light dark">
   <meta property="og:title" content="Gallery · Fiona Gardner">
-  <meta property="og:description" content="Living water, blood and dew through the microscope.">
+  <meta property="og:description" content="Living water, blood plasma, blood and dew through the microscope.">
   <meta property="og:image" content="https://fionagardner.org/assets/fiona-portrait.jpg">
   <title>Gallery · Fiona Gardner</title>
   <link rel="icon" href="assets/fiona-gardner-symbol.png">
@@ -27,6 +27,7 @@
       <h2>Rivers of light and water.</h2>
       <nav class="gallery-nav" aria-label="Gallery sets">
         <a href="#plasma">Living Water / Urine</a>
+        <a href="#blood-plasma">Blood Plasma</a>
         <a href="#blood">Blood</a>
         <a href="#dew">Dew</a>
       </nav>
@@ -52,6 +53,100 @@
         <a class="tile" href="assets/gallery/plasma/15.jpg"><img src="assets/gallery/plasma/15-t.jpg" alt="Living water (urine) under the microscope" width="600" height="600" loading="lazy"></a>
       </div>
     </section>
+
+    <section class="gallery-set" id="blood-plasma">
+  <h2>Blood Plasma</h2>
+  <style>
+  /* full-width black band, so it looks as it did on the original all-black test page */
+  #blood-plasma{max-width:none;background:#000;padding-inline:0}
+  #blood-plasma h2{color:#e9e2d6;width:100%;max-width:72rem;margin-inline:auto;padding-inline:1.25rem;box-sizing:border-box}
+
+  #blood-plasma .collage{
+    position:relative;width:100%;max-width:1600px;margin:0 auto;
+    aspect-ratio:16/9;display:grid;gap:6px;background:#000;
+    grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));
+  }
+  #blood-plasma .bp-tile{position:relative;overflow:hidden;background:#000}
+  #blood-plasma .bp-tile img{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
+    opacity:0;transition:opacity 1.6s ease-in-out;will-change:transform,opacity;
+  }
+  #blood-plasma .bp-tile img.on{opacity:1}
+  /* zooms between 92% and 100% only, so the whole photo is always visible */
+  @keyframes drift{
+    0%  {transform:scale(.82) translate(calc(var(--dx) * -1),calc(var(--dy) * -1))}
+    50% {transform:scale(1) translate(0,0)}
+    100%{transform:scale(.82) translate(var(--dx),var(--dy))}
+  }
+  #blood-plasma .bp-tile img{animation:drift var(--dur) ease-in-out infinite;animation-delay:var(--delay)}
+  #blood-plasma .credit{
+    position:absolute;right:12px;bottom:10px;font-size:12px;letter-spacing:.04em;
+    color:rgba(220,230,225,.75);text-shadow:0 1px 3px #000;pointer-events:none
+  }
+  @media (max-width:700px){
+    #blood-plasma .collage{aspect-ratio:auto;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none}
+    #blood-plasma .bp-tile{aspect-ratio:16/9}
+    #blood-plasma .bp-tile.t9{display:none}   /* phones: 8 windows, so both columns end evenly */
+    #blood-plasma .credit{position:static;grid-column:1/-1;padding:4px 8px 8px;text-align:right}
+  }
+  </style>
+  <div class="collage" id="bp-collage" aria-label="Blood plasma under the microscope, a moving collage by Fiona Gardner">
+  <div class="bp-tile t1"></div><div class="bp-tile t2"></div><div class="bp-tile t3"></div>
+  <div class="bp-tile t4"></div><div class="bp-tile t5"></div><div class="bp-tile t6"></div>
+  <div class="bp-tile t7"></div><div class="bp-tile t8"></div><div class="bp-tile t9"></div>
+  <div class="credit">Microscope images © Fiona Gardner · @messagesinplasma</div>
+</div>
+  <script>
+
+(function(){
+  var IMGS = ["assets/gallery/blood-plasma/01.jpg", "assets/gallery/blood-plasma/02.jpg", "assets/gallery/blood-plasma/03.jpg", "assets/gallery/blood-plasma/04.jpg", "assets/gallery/blood-plasma/05.jpg", "assets/gallery/blood-plasma/06.jpg", "assets/gallery/blood-plasma/07.jpg", "assets/gallery/blood-plasma/08.jpg", "assets/gallery/blood-plasma/09.jpg", "assets/gallery/blood-plasma/10.jpg", "assets/gallery/blood-plasma/11.jpg", "assets/gallery/blood-plasma/12.jpg", "assets/gallery/blood-plasma/13.jpg", "assets/gallery/blood-plasma/14.jpg", "assets/gallery/blood-plasma/15.jpg"];
+  var tiles = Array.prototype.slice.call(document.querySelectorAll('#bp-collage .bp-tile'));
+
+  // shuffle so the order is different on every visit
+  var order = IMGS.map(function(_,i){return i});
+  for (var i=order.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=order[i];order[i]=order[j];order[j]=t;}
+
+  function makeImg(idx){
+    var img = new Image();
+    img.src = IMGS[idx];
+    img.alt = 'Blood plasma under the microscope';
+    img.dataset.idx = idx;
+    img.style.setProperty('--dur', (9 + Math.random()*5).toFixed(1)+'s');
+    img.style.setProperty('--delay', (-Math.random()*20).toFixed(1)+'s');
+    img.style.setProperty('--dx', ((Math.random()*8)-4).toFixed(1)+'%');
+    img.style.setProperty('--dy', ((Math.random()*8)-4).toFixed(1)+'%');
+    return img;
+  }
+
+  var showing = [];
+  tiles.forEach(function(tile,k){
+    var img = makeImg(order[k]);
+    tile.appendChild(img);
+    showing[k] = order[k];
+    setTimeout(function(){ img.classList.add('on'); }, 150 + k*180);
+  });
+  var reserve = order.slice(tiles.length);
+
+
+  var last = -1;
+  function swap(){
+    var k; do { k = Math.floor(Math.random()*tiles.length); } while (k === last && tiles.length > 1);
+    last = k;
+    var tile = tiles[k];
+    var nextIdx = reserve.shift();
+    reserve.push(showing[k]);
+    showing[k] = nextIdx;
+    var oldImg = tile.querySelector('img.on');
+    var img = makeImg(nextIdx);
+    tile.appendChild(img);
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ img.classList.add('on'); }); });
+    if (oldImg) setTimeout(function(){ oldImg.classList.remove('on'); }, 200);
+    setTimeout(function(){ if (oldImg && oldImg.parentNode) oldImg.parentNode.removeChild(oldImg); }, 3000);
+  }
+  setInterval(swap, 2200);
+})();
+  </script>
+</section>
 
     <section class="gallery-set" id="blood">
       <h2>Blood</h2>
