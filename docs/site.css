@@ -265,6 +265,11 @@ a.exploration:hover, a.exploration:focus-visible { border-color: var(--gold); }
 .zoom-thumb img { box-shadow: none; transform-origin: 48% 46%; animation: geometry-zoom 9s ease-in-out infinite; }
 @keyframes geometry-zoom { 0%, 100% { scale: 1; } 50% { scale: 1.9; } }
 @media (prefers-reduced-motion: reduce) { .zoom-thumb img { animation: none; } }
+/* Intention, Consciousness and Geometry: the picture's own bright points twinkle, one at a time,
+   with the same four-pointed sparkle as the Names of Light painting. */
+.exploration .twinkle-thumb { display: block; position: relative; width: 4.5rem; height: 4.5rem; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 1px var(--line); }
+.twinkle-thumb img { box-shadow: none; }
+.twinkle-thumb .glint { width: 15%; }
 .exploration p { margin: 0; color: var(--ink-soft); font-size: .95rem; }
 .essay-art { margin: 2.5rem auto 0; padding-inline: 1.25rem; display: flex; justify-content: center; }
 .essay-art img { width: auto; max-width: min(100%, 72rem); max-height: 78vh; border-radius: 4px; }
